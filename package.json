@@ -8,12 +8,15 @@
   },
   "scripts": {
     "test": "./test.sh",
+    "coverage": "./coverage.sh",
     "flatten": "./flatten-all",
     "profile": "./profile.sh"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "solidity-coverage": "^0.7.0"
+  },
   "dependencies": {
     "@trusttoken/registry": "0.1.2",
     "@trusttoken/trusttokens": "0.1.0",
