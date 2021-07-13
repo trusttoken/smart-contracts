@@ -2,7 +2,11 @@ import { TEST_STATE_BLOCK_NUMBER, upgradeSuite } from './suite'
 import {
   ArbitraryDistributor__factory,
   LinearTrueDistributor__factory,
-  Liquidator__factory, LoanFactory__factory, RatingAgencyV2Distributor__factory, TrueFarm__factory, TrueFiPool__factory, TrueLender__factory, TrueRatingAgency__factory, TrueRatingAgencyV2__factory,
+  RatingAgencyV2Distributor__factory,
+  TrueFarm__factory,
+  TrueFiPool__factory,
+  TrueLender__factory,
+  TrueRatingAgencyV2__factory,
 } from 'contracts'
 import { expect, use } from 'chai'
 import { Wallet } from 'ethers'
@@ -12,29 +16,6 @@ use(solidity)
 
 describe('TrueFi', () => {
   const emptyAddress = Wallet.createRandom().address
-
-  it('Liquidator', async () => {
-    await upgradeSuite(TEST_STATE_BLOCK_NUMBER, Liquidator__factory, '0x76dd4921C99AC6b61b3a98f9fa6f181cA6D70c77', [
-      'pool',
-      'stkTru',
-      'tru',
-      'oracle',
-      'factory',
-    ])
-  })
-
-  it('LoanFactory', async () => {
-    // this needs to be updated once in a while, this loan will exist till 06/06/21
-    const existingLoan = '0x583F674b8E2c36807E7371b2D27849F0E98549cc'
-
-    await upgradeSuite(TEST_STATE_BLOCK_NUMBER, LoanFactory__factory, '0x4ACE6dE67E9a9EDFf5c2d0a584390Fb5394119e7', [
-      (contract) => contract.isLoanToken(emptyAddress),
-      (contract) => contract.isLoanToken(existingLoan),
-      'currencyToken',
-      'lender',
-      'liquidator',
-    ])
-  })
 
   it('TrueFarm', async () => {
     // same as before, may need to find a better method for getting such addresses
@@ -99,21 +80,6 @@ describe('TrueFi', () => {
     ])
     expect(await contract.minVotes()).to.eq(5000)
     expect(await contract.minRatio()).to.eq(15000)
-  })
-
-  it('TrueRatingAgency', async () => {
-    const allowedSubmitter = '0x83c1b27276108c0f68c52c2319beed4646061a1f'
-
-    await upgradeSuite(TEST_STATE_BLOCK_NUMBER, TrueRatingAgency__factory, '0x43A4F930F2cC35948d3a6dcd47CD0E50761f9B88', [
-      (contract) => contract.allowedSubmitters(allowedSubmitter),
-      'trustToken',
-      'distributor',
-      'factory',
-      'lossFactor',
-      'burnFactor',
-      'rewardMultiplier',
-      'submissionPauseStatus',
-    ])
   })
 
   it('TrueRatingAgencyV2', async () => {
