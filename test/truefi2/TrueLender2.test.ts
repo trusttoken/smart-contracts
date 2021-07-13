@@ -74,8 +74,8 @@ describe('TrueLender2', () => {
     token1 = await deployContract(owner, MockErc20Token__factory)
     token2 = await deployContract(owner, MockErc20Token__factory)
 
-    await poolFactory.whitelist(token1.address, true)
-    await poolFactory.whitelist(token2.address, true)
+    await poolFactory.allowToken(token1.address, true)
+    await poolFactory.allowToken(token2.address, true)
 
     await poolFactory.createPool(token1.address)
     await poolFactory.createPool(token2.address)
@@ -84,7 +84,7 @@ describe('TrueLender2', () => {
     pool2 = TrueFiPool2__factory.connect(await poolFactory.pool(token2.address), owner)
 
     counterfeitPool = await deployContract(owner, TrueFiPool2__factory)
-    await counterfeitPool.initialize(token1.address, lender.address, AddressZero, owner.address)
+    await counterfeitPool.initialize(token1.address, lender.address, AddressZero, owner.address, '')
 
     await pool1.setOracle(poolOracle.address)
 
